@@ -15,12 +15,14 @@ while salir_programa == 'y':
   usuario_clave = input("Password: ")
 
   user_logger = hp.findUser(usuario_clave,usuario_nombre)
-
+  #Validacion para ingresar al programa si usuario existe
   if (user_logger != []):
     os.system('clear')
     print("Bienvenido "+user_logger[0])
     exit = False
+    #Deteccion de rol Usuario
     if(user_logger[2] == "Administrador"):
+      #Ciclo de Menu
       while exit == False:
         print("**********************************************")
         print("MENU DE CONSULTA")
@@ -34,6 +36,7 @@ while salir_programa == 'y':
         print("7.- Salir")
         print("\n")
         menu_item_select = input("Introdusca la opcion deseada: ")
+        #Comparaciones para realizar los proceso correspondientes al menu seleccionado
         if(menu_item_select == '1'):
           regresar_programa = 'n'
           while regresar_programa == 'n':
@@ -117,7 +120,6 @@ while salir_programa == 'y':
     elif(user_logger[2] == "Cliente"):
       while exit == False:
         print("Hola Cliente")
-
     else:
       print("Usuario Sin Rol")
       salir_programa = hp.yes_or_no("desea intentar de nuevo")

@@ -31,6 +31,7 @@ def yes_or_no_regresar(question):
       if reply[0] == 'n':
           return 'n'
 #Metodos principales 
+#Metodo para Mayores ventas (1) o Menores (!= 1) sengun sortMayorMenor
 def top50MayorMenorVenta(sortMayorMenor):
   productos_mayor_ventas = []
   for producto in lifeStoreFile.lifestore_products:
@@ -38,10 +39,13 @@ def top50MayorMenorVenta(sortMayorMenor):
     for sale in lifeStoreFile.lifestore_sales:
       if (producto[0]== sale[1]):
         ventas_producto += 1
+    #Creacion de listado con valores de interes
     productos_mayor_ventas.append([producto[0],producto[1],ventas_producto,producto[3]])
   if(sortMayorMenor == 1):
+    #Se ordena listado segun ventas_producto
     productos_mayor_ventas.sort(key=lambda x: x[2], reverse = True)
     cantidad_productos = len(productos_mayor_ventas)
+    #verifica si items es mayor a 50 
     if(cantidad_productos>50):
       for product_mayor in productos_mayor_ventas[0:50]:
         if(product_mayor[2] !=  0):
@@ -59,7 +63,7 @@ def top50MayorMenorVenta(sortMayorMenor):
     else:
       for product_mayor in productos_mayor_ventas:
           print(" ID: ",product_mayor[0]," Ventas: ",product_mayor[2], " Categoria: ", product_mayor[3])
-  
+#Metodo para Obtener Mayor o Menor en busquedas Mayor (1) o Menores (!= 1) sengun sortMayorMenorBusqueda
 def top100MayorMenorBusqueda(sortMayorMenorBusqueda):
   productos_mayor_busqueda = []
   for producto in lifeStoreFile.lifestore_products:
@@ -88,7 +92,7 @@ def top100MayorMenorBusqueda(sortMayorMenorBusqueda):
     else:
       for product_mayor in productos_mayor_busqueda:
           print(" ID: ",product_mayor[0]," Busquedas: ",product_mayor[2], " Categoria: ", product_mayor[3])
-
+#Metodo para Mayores ventas (1) o Menores (!= 1) sengun sortMayorMenor Por Categoria
 def top50MayorMenorVentaPorCategoria(sortMayorMenor):
   productos_mayor_ventas = []
   categorias_productos = []
@@ -155,7 +159,7 @@ def top50MayorMenorVentaPorCategoria(sortMayorMenor):
         for producto_categorizado in productos_mayor_ventas:
           if(categoria_filtro == producto_categorizado[3]):
             print(' ID: ',producto_categorizado[0],' Ventas: ',producto_categorizado[2])
-    
+#Metodo para Obtener Mayor o Menor en busquedas Mayor (1) o Menores (!= 1) sengun sortMayorMenorBusqueda Por categoria  
 def top100MayorMenorBusquedaPorCategoria(sortMayorMenorBusqueda):
   productos_mayor_busqueda = []
   categorias_productos = []
@@ -220,7 +224,7 @@ def top100MayorMenorBusquedaPorCategoria(sortMayorMenorBusqueda):
         for producto_categorizado in productos_mayor_busqueda:
           if(categoria_filtro == producto_categorizado[3]):
             print(' ID: ',producto_categorizado[0],' Busquedas: ',producto_categorizado[2])
-
+#Metodo para obtener los articulos con Mejor (1) y peor calificacion (!= 1) segun menorMayorCalificacion
 def top20MejorPeorcalificacion(menorMayorCalificacion):
   productos_calificacion = []
   for producto in lifeStoreFile.lifestore_products:
@@ -256,12 +260,12 @@ def top20MejorPeorcalificacion(menorMayorCalificacion):
       productos_calificacion.sort(key=lambda x: x[2])
       for producto_calificado in productos_calificacion:
         print(" ID: ",producto_calificado[0]," Calificacion: ",round(producto_calificado[2],2), " Categoria: ", producto_calificado[3])
-
+#Resumen de ventas para obtener total ingresos, venta pormedio mensual, total anual, Ordenamiento Meses con mayor venta
 def resumenVentas():
   sumaTotalVentas()
   print('-------')
   ventaPromedioMensual()
-
+#Metodo para obtener ingresos total
 def sumaTotalVentas():
   sumaTotalVentas = 0
   for producto in lifeStoreFile.lifestore_products:
@@ -269,23 +273,24 @@ def sumaTotalVentas():
       if(producto[0] == sale_producto[1]):
         sumaTotalVentas += producto[2]
   print('TOTAL INGRESOS: ',sumaTotalVentas)
-
+#Metodo venta promedio mensual, total por año, ordenamiento de meses con mayo venta
 def ventaPromedioMensual():
   ventas_producto = []
   anos_ventas = []
   meses_promedio_venta = []
   ordenar_meses_mayor_venta = []
-  
+  #meses del año
   meses = ['01','02','03','04','05','06','07','08','09','10','11','12',]
   for producto in lifeStoreFile.lifestore_products:
     for sale_producto in lifeStoreFile.lifestore_sales:
       if(producto[0] == sale_producto[1]):
         ventas_producto.append([producto[0],producto[2],sale_producto[3]])
-  print('VENTAS POR AÑO:')      
+  print('VENTAS POR AÑO:') 
+  #deteccion de años de ingresos     
   for venta_p in ventas_producto:
     anos_ventas.append(venta_p[2][6:10])
   ano_ventas = list(dict.fromkeys(anos_ventas))
-  
+  #impresion de ingresos por año
   for ano in ano_ventas:
     total_porano = 0
     for mes in meses:
@@ -300,6 +305,7 @@ def ventaPromedioMensual():
       total_porano += total_mes_venta
     print('Año: ',ano,' Total: ',total_porano)
   print('-------')
+  #promedio de ventas por mes
   print('PROMEDIO DE VENTA POR MES:') 
   for mes in meses:
     total_mes_anos = 0
